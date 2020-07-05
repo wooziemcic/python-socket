@@ -12,15 +12,16 @@ server = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #what type of IP addr
 server.bind(ADDR) #bound this socket to the address so now anything that hits the adress with bind to the socket
 
 def handle_client(conns, addr): #(handle the individual connection one client and one server)
-    print("New Conncetion {addr} connceted.")
+    print(f"New Conncetion {addr} connceted.")
     connected = True
     while connected:
         msg_length = conns.recv(HEADER).decode(FORMAT)
-        msg_length = int(msg_length)
-        msg = conns.recv(msg_length).decode(FORMAT)
-        if msg == DISCONNECT_MESSAGE:
-            connected = False
-        print(f"[{addr}] {msg}")
+        if msg_length:   
+            msg_length = int(msg_length)
+            msg = conns.recv(msg_length).decode(FORMAT)
+            if msg == DISCONNECT_MESSAGE:
+                connected = False
+            print(f"[{addr}] {msg}")
     conns.close()
 
 
